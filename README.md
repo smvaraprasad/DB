@@ -44,3 +44,28 @@ storage_engine/
 │   ├── test_engine.c
 │   └── test_raft.c
 └── data/             # WAL and B-tree persistent files (for local dev)
+
+
+
+
+## Usage
+
+Build the project:
+```bash
+make
+```
+
+Run the CLI:
+```bash
+./main
+```
+
+Example session:
+```
+engine> INSERT foo bar
+Inserted: foo -> bar
+engine> SELECT foo
+bar
+engine> EXIT
+Bye!
+```

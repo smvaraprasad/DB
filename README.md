@@ -1,39 +1,55 @@
-# Step 1: Single-Node Storage Engine
+B-Tree Key-Value Storage EngineAn in-memory key-value database built on a B-Tree index (order $M = 16$), using a Write-Ahead Log (WAL) to ensure data durability across restarts.
 
-- Implement a Write-Ahead Log (WAL) for durability.
-  - All writes are first appended to the WAL before being applied.
-- Use a B-tree for indexing and efficient data access.
-  - Store key-value pairs in the B-tree.
-  - On startup, replay the WAL to restore state.
+Features 
+* In-Memory B-Tree Index: Fast key-value lookups and mutations using a B-Tree structure with order $M = 16$.
+* WAL Durability: Writes are appended to a disk-backed Write-Ahead Log (WAL) before updating the in-memory index.
+* Crash Recovery: Replays the WAL during startup to reconstruct the B-Tree state.
+* Interactive REPL: Simple command-line interface for reading and writing data.Architecture 
 
-# Step 2: Multi-Node Extension with Raft
+Overview                     
+                      +-------------------+
+                      |      CLI REPL     |
+                      +-------------------+
+                                |
+                         Write Operation
+                                |
+            +-------------------+-------------------+
+            |                                       |
+            v                                       v
+  +-------------------+                   +-------------------+
+  |  Write-Ahead Log  |                   |  In-Memory B-Tree |
+  |   (Disk Append)   | --- Startup ----> |     (M = 16)      |
+  +-------------------+     Replay        +-------------------+
 
-- Integrate the Raft consensus algorithm:
-  - Implement leader election.
-  - Handle log replication across nodes.
-  - Manage cluster membership changes.
-- The Raft state machine will ensure all nodes agree on the log and state.
-- On each node, apply committed log entries to the B-tree.
 
 
-## Usage
+Prerequisites
+C/C++ compiler toolchain (GCC or Clang)
+make build system
 
-Build the project:
-```bash
-make
-```
+Building
+Clone the repository and build the project:
+Bash "make"
 
-Run the CLI:
-```bash
-./main
-```
+Usage
+Run the executable to open the CLI prompt:
+Bash "./main"
 
-Example session:
-```
+
+Supported Commands
+Command Syntax                Description
+INSERT  INSERT <key> <value>  Appends to WAL and inserts/updates key in the B-Tree
+SELECT  SELECT <key>          Looks up key in the in-memory B-Tree.
+EXIT    EXIT                  Terminates the CLI session.
+
+
+Example 
+
 engine> INSERT foo bar
 Inserted: foo -> bar
+
 engine> SELECT foo
 bar
+
 engine> EXIT
 Bye!
-```

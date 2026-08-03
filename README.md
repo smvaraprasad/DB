@@ -6,7 +6,8 @@ Features
 * Crash Recovery: Replays the WAL during startup to reconstruct the B-Tree state.
 * Interactive REPL: Simple command-line interface for reading and writing data.Architecture 
 
-Overview                     
+Overview         
+```
                       +-------------------+
                       |      CLI REPL     |
                       +-------------------+
@@ -20,8 +21,7 @@ Overview
   |  Write-Ahead Log  |                   |  In-Memory B-Tree |
   |   (Disk Append)   | --- Startup ----> |     (M = 16)      |
   +-------------------+     Replay        +-------------------+
-
-
+```
 
 Prerequisites
 C/C++ compiler toolchain (GCC or Clang)
